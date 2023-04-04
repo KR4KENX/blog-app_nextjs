@@ -1,15 +1,21 @@
 import express, { Request, Response } from "express";
-import formidable from "formidable";
+import formidable, { Fields } from "formidable";
 import fs from "fs";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 const app = express();
 
 let htmlform = `<!DOCTYPE html>
 <html>
 <head><title>file upload</title></head>
 <body>
-    <form action="/create" method="post" enctype="multipart/form-data">
+    <form action="/posts" method="post" enctype="multipart/form-data">
         <input type="file" name="file1"> <br>
-        <input type="text" name="title"> <br>
+        Title <input type="text" name="title"> <br>
+        Short Description <input type="text" name="shortDesc"> <br>
+        Description <input type="text" name="description"> <br>
+        Author <input type="text" name="author"> <br>
         <input type="submit" value="Send">
     </form>
 </body>
@@ -22,23 +28,54 @@ app.get("/", (req: Request, res: Response) => {
   res.send(htmlform);
 });
 
-app.post("/create", (req: Request, res: Response) => {
+app.get("/posts", async (req: Request, res: Response) => {
+  const posts = await prisma.post.findMany();
+  res.send(posts);
+});
+
+app.get("/posts/:id", async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const post = await prisma.post.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  res.send(post).status(200);
+});
+
+app.delete("/posts", async (req: Request, res: Response) => {
+  await prisma.post.deleteMany();
+  res.sendStatus(200);
+});
+
+app.post("/posts", (req: Request, res: Response) => {
   //uploading photo
   const form = new formidable.IncomingForm();
-  form.parse(req, function (err, fields, files: any) {
-    console.log(JSON.stringify(files.file1));
+  form.parse(req, function (err, fields: Fields, files: any) {
     let tempPath = files.file1.filepath;
     let newPath = "./images/" + files.file1.originalFilename;
-    fs.rename(tempPath, newPath, function (err) {
+
+    fs.rename(tempPath, newPath, async function (err) {
       if (err) {
         res.send("error uploading file!");
       } else {
-        res.send(
-          "filepath: " +
-            `http://localhost:8080/images/${files.file1.originalFilename}` +
-            " title: " +
-            fields.title
-        );
+        if (
+          typeof fields.title != "string" ||
+          typeof fields.shortDesc != "string" ||
+          typeof fields.description != "string" ||
+          typeof fields.author != "string"
+        )
+          return res.send(400);
+        await prisma.post.create({
+          data: {
+            title: fields.title,
+            shortDesc: fields.shortDesc,
+            description: fields.description,
+            author: fields.author,
+            img: `http://localhost:8080/images/${files.file1.originalFilename}`,
+          },
+        });
+        res.send("Post created").status(201);
       }
     });
   });
