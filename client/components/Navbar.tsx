@@ -23,12 +23,15 @@ export default function Navbar() {
       author: author,
       img: file,
     };
-    console.log(formData);
-    // axios.post("http://localhost:8080/posts", formData, {
-    //   headers: {
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    // });
+    axios
+      .post("http://localhost:8080/posts", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
   };
   return (
     <nav className="d-flex flex-row justify-content-between align-items-center container col-xl-10 col-l-10 col-md-10 col-sm-10 col-xs-12 border-bottom text-dark p-3">
