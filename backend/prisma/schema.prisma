@@ -11,10 +11,11 @@ datasource db {
 }
 
 model Post {
-  id          Int    @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   title       String
-  shortDesc   String @db.VarChar(200)
-  description String @db.LongText
+  shortDesc   String   @db.VarChar(200)
+  description String   @db.LongText
   author      String
   img         String
+  createdAt   DateTime @default(now())
 }
