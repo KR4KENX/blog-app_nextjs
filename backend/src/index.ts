@@ -23,6 +23,7 @@ let htmlform = `<!DOCTYPE html>
 
 //access to images on server
 app.use("/images", express.static("images"));
+app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
   res.send(htmlform);
@@ -38,6 +39,23 @@ app.get("/posts/:id", async (req: Request, res: Response) => {
   const post = await prisma.post.findUnique({
     where: {
       id: id,
+    },
+  });
+  res.send(post).status(200);
+});
+
+app.patch("/posts/:id", async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const { title, shortDesc, description, author } = req.body;
+  const post = await prisma.post.update({
+    where: {
+      id: id,
+    },
+    data: {
+      title: title,
+      shortDesc: shortDesc,
+      description: description,
+      author: author,
     },
   });
   res.send(post).status(200);
