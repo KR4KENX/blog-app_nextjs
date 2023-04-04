@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "types": [ "node" ],
+        "typeRoots": [ "../node_modules/@types" ],
+        "sourceMap": true,
+        "outDir": "dist",
+        "strict": true,
+        "lib": ["ESNext"],
+        "esModuleInterop": true
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
