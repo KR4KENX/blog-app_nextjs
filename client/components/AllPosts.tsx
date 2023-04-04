@@ -15,7 +15,7 @@ export default function AllPosts() {
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, []);
   return (
     <main className="container col-xl-10 col-l-10 col-md-10 col-sm-10 col-xs-12 mt-3">
       {posts == undefined ? (
@@ -34,7 +34,7 @@ export default function AllPosts() {
                 alt="post img"
               />
               <div className="d-flex flex-column justify-content-start align-items-center position-relative w-100">
-                <p className="post-card--description position-absolute top-50 start-50 translate-middle bg-white p-5">
+                <p className="post-card--description position-absolute top-50 start-50 translate-middle bg-white p-5 fs-5">
                   {post.description}
                 </p>
                 <span className="fs-5 my-4">

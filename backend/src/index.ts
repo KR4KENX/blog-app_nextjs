@@ -80,36 +80,35 @@ app.delete("/posts", async (req: Request, res: Response) => {
 });
 
 app.post("/posts", (req: Request, res: Response) => {
-  //uploading photo
-  const form = new formidable.IncomingForm();
-  form.parse(req, function (err, fields: Fields, files: any) {
-    let tempPath = files.file1.filepath;
-    let newPath = "./images/" + files.file1.originalFilename;
-
-    fs.rename(tempPath, newPath, async function (err) {
-      if (err) {
-        res.send("error uploading file!");
-      } else {
-        if (
-          typeof fields.title != "string" ||
-          typeof fields.shortDesc != "string" ||
-          typeof fields.description != "string" ||
-          typeof fields.author != "string"
-        )
-          return res.send(400);
-        await prisma.post.create({
-          data: {
-            title: fields.title,
-            shortDesc: fields.shortDesc,
-            description: fields.description,
-            author: fields.author,
-            img: `http://localhost:8080/images/${files.file1.originalFilename}`,
-          },
-        });
-        res.send("Post created").status(201);
-      }
-    });
-  });
+  // //uploading photo
+  // const form = new formidable.IncomingForm();
+  // form.parse(req, function (err, fields: Fields, files: any) {
+  //   let tempPath = files.file1.filepath;
+  //   let newPath = "./images/" + files.file1.originalFilename;
+  //   fs.rename(tempPath, newPath, async function (err) {
+  //     if (err) {
+  //       res.send("error uploading file!");
+  //     } else {
+  //       if (
+  //         typeof fields.title != "string" ||
+  //         typeof fields.shortDesc != "string" ||
+  //         typeof fields.description != "string" ||
+  //         typeof fields.author != "string"
+  //       )
+  //         return res.send(400);
+  //       await prisma.post.create({
+  //         data: {
+  //           title: fields.title,
+  //           shortDesc: fields.shortDesc,
+  //           description: fields.description,
+  //           author: fields.author,
+  //           img: `http://localhost:8080/images/${files.file1.originalFilename}`,
+  //         },
+  //       });
+  //       res.send("Post created").status(201);
+  //     }
+  //   });
+  // });
 });
 
 app.listen(8080, () => {
