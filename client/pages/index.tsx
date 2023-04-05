@@ -1,7 +1,9 @@
 import Head from "next/head";
 import AllPosts from "@/components/AllPosts";
+import ToggleReload from "@/models/ToggleReload";
 
-export default function Home() {
+export default function Home(props: ToggleReload) {
+  console.log(props.toggleReload);
   return (
     <>
       <Head>
@@ -10,7 +12,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <AllPosts />
+      <AllPosts toggleReload={props.toggleReload} />
     </>
   );
 }

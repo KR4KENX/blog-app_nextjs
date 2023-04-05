@@ -5,8 +5,13 @@ import { SiMicrodotblog } from "react-icons/si";
 import Link from "next/link";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
+import react from "react";
 
-export default function Navbar() {
+interface NavbarProps {
+  setToggleReload: react.Dispatch<react.SetStateAction<boolean>>;
+}
+
+export default function Navbar(props: NavbarProps) {
   const [showModal, setShowModal] = useState(false);
   const [file, setFile] = useState<FormData>();
   const [author, setAuthor] = useState("");
@@ -31,6 +36,7 @@ export default function Navbar() {
       })
       .then((res) => {
         console.log(res.data);
+        props.setToggleReload((prev) => !prev);
       });
   };
   return (

@@ -3,8 +3,9 @@ import axios from "axios";
 import Post from "../models/Post";
 import Loader from "./Loader";
 import { FaUser } from "react-icons/fa";
+import ToggleReload from "@/models/ToggleReload";
 
-export default function AllPosts() {
+export default function AllPosts(props: ToggleReload) {
   const [posts, setPosts] = useState<Post[]>();
   useEffect(() => {
     axios
@@ -15,7 +16,7 @@ export default function AllPosts() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [props.toggleReload]);
   return (
     <main className="container col-xl-10 col-l-10 col-md-10 col-sm-10 col-xs-12 mt-3">
       {posts == undefined ? (
