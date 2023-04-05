@@ -18,4 +18,5 @@ model Post {
   author      String
   img         String
   createdAt   DateTime @default(now())
+  password    String   @default("admin")
 }

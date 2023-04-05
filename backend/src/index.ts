@@ -57,18 +57,23 @@ app.get("/posts/:id", async (req: Request, res: Response) => {
   res.send(post).status(200);
 });
 
-app.patch("/posts/:id", async (req: Request, res: Response) => {
-  const id = Number(req.params.id);
+app.patch("/posts", async (req: Request, res: Response) => {
+  const id = Number(req.query.id);
+  const passwd = String(req.query.passwd);
   const { title, shortDesc, description, author } = req.body;
-  const post = await prisma.post.update({
+  const post = await prisma.post.updateMany({
     where: {
-      id: id,
+      AND: [
+        {
+          id: id,
+          password: passwd,
+        },
+      ],
     },
     data: {
       title: title,
       shortDesc: shortDesc,
       description: description,
-      author: author,
     },
   });
   res.send(post).status(200);

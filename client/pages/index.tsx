@@ -12,7 +12,10 @@ export default function Home(props: ToggleReload) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <AllPosts toggleReload={props.toggleReload} />
+      <AllPosts
+        setToggleReload={props.setToggleReload}
+        toggleReload={props.toggleReload}
+      />
     </>
   );
 }

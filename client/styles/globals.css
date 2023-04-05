@@ -6,6 +6,7 @@ body{
 }
 .post-card:hover{
   transform: scale(1.05);
+  margin: 5em 0em !important;
 }
 .post-card--description{
   opacity: 0;

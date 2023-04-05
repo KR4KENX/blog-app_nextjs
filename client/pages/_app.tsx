@@ -9,7 +9,11 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Navbar setToggleReload={setToggleReload} />
-      <Component toggleReload={toggleReload} {...pageProps} />
+      <Component
+        setToggleReload={setToggleReload}
+        toggleReload={toggleReload}
+        {...pageProps}
+      />
     </>
   );
 }
